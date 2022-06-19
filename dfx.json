@@ -1,0 +1,35 @@
+{
+  "canisters": {
+    "doap": {
+      "main": "src/doap/main.mo",
+      "type": "motoko"
+    },
+    "doap_assets": {
+      "dependencies": [
+        "doap"
+      ],
+      "frontend": {
+        "entrypoint": "src/doap_assets/src/index.html"
+      },
+      "source": [
+        "src/doap_assets/assets",
+        "dist/doap_assets/"
+      ],
+      "type": "assets"
+    }
+  },
+  "defaults": {
+    "build": {
+      "args": "",
+      "packtool": ""
+    }
+  },
+  "dfx": "0.10.1",
+  "networks": {
+    "local": {
+      "bind": "127.0.0.1:8000",
+      "type": "ephemeral"
+    }
+  },
+  "version": 1
+}
