@@ -2,7 +2,12 @@
   "name": "doap_assets",
   "version": "0.1.0",
   "description": "Internet Computer starter application",
-  "keywords": ["Internet Computer", "Motoko", "JavaScript", "Canister"],
+  "keywords": [
+    "Internet Computer",
+    "Motoko",
+    "JavaScript",
+    "Canister"
+  ],
   "scripts": {
     "build": "webpack",
     "prebuild": "npm run copy:types",
@@ -11,15 +16,24 @@
     "copy:types": "rsync -avr .dfx/$(echo ${DFX_NETWORK:-'**'})/canisters/** --exclude='assets/' --exclude='idl/' --exclude='*.wasm' --exclude='*.most' --delete src/declarations"
   },
   "devDependencies": {
+    "@babel/core": "^7.18.5",
+    "@babel/plugin-transform-runtime": "^7.18.5",
+    "@babel/preset-env": "^7.18.2",
+    "@babel/preset-react": "^7.17.12",
     "@dfinity/agent": "0.11.3",
     "@dfinity/candid": "0.11.3",
     "@dfinity/principal": "0.11.3",
     "assert": "2.0.0",
+    "babel-loader": "^8.2.5",
     "buffer": "6.0.3",
+    "css-loader": "^6.7.1",
     "events": "3.3.0",
-    "html-webpack-plugin": "5.5.0",
+    "html-webpack-plugin": "^5.5.0",
     "process": "0.11.10",
+    "react": "^17.0.2",
+    "react-dom": "^17.0.2",
     "stream-browserify": "3.0.0",
+    "style-loader": "^3.3.1",
     "terser-webpack-plugin": "5.2.5",
     "util": "0.12.4",
     "webpack": "5.72.0",
@@ -34,5 +48,8 @@
     "last 2 firefox version",
     "last 2 safari version",
     "last 2 edge version"
-  ]
+  ],
+  "dependencies": {
+    "react-router-dom": "^6.3.0"
+  }
 }

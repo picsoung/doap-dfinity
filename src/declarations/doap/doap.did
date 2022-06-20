@@ -1,0 +1,51 @@
+type Result_1 = 
+ variant {
+   err: Error;
+   ok: DoapEvent;
+ };
+type Result = 
+ variant {
+   err: Error;
+   ok: bool;
+ };
+type Error = 
+ variant {
+   alreadyExists;
+   notFound;
+ };
+type DoapEvent = 
+ record {
+   active: bool;
+   dateCreated: int;
+   dateEnding: int;
+   description: text;
+   eventType: ClaimOptions;
+   image: text;
+   name: text;
+   timePeriod: int;
+   uid: text;
+ };
+type ClaimOptions__1 = 
+ variant {
+   open;
+   secret;
+   timelock;
+   timelockAndSecret;
+ };
+type ClaimOptions = 
+ variant {
+   open;
+   secret;
+   timelock;
+   timelockAndSecret;
+ };
+service : {
+  createEvent: (text, ClaimOptions__1, text, text, text, int) -> (Result_1);
+  endEvent: (text) -> (Result_1);
+  getEvent: (text) -> (Result_1) query;
+  getEvents: () -> (vec record {
+                          text;
+                          DoapEvent;
+                        }) query;
+  isEventActive: (text) -> (Result);
+}

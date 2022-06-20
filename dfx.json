@@ -4,6 +4,10 @@
       "main": "src/doap/main.mo",
       "type": "motoko"
     },
+    "dip721": {
+      "main": "src/dip721/main.mo",
+      "type": "motoko"
+    },
     "doap_assets": {
       "dependencies": [
         "doap"

@@ -1,19 +1,13 @@
-import { doap } from "../../declarations/doap";
+import React from "react";
+import ReactDOM from "react-dom";
+import App from "./app";
+import ErrorBoundary from "./components/error_boundary";
 
-document.querySelector("form").addEventListener("submit", async (e) => {
-  e.preventDefault();
-  const button = e.target.querySelector("button");
-
-  const name = document.getElementById("name").value.toString();
-
-  button.setAttribute("disabled", true);
-
-  // Interact with foo actor, calling the greet method
-  const greeting = await doap.greet(name);
-
-  button.removeAttribute("disabled");
-
-  document.getElementById("greeting").innerText = greeting;
-
-  return false;
-});
+ReactDOM.render(
+  <React.StrictMode>
+    <ErrorBoundary>
+      <App />
+    </ErrorBoundary>
+  </React.StrictMode>,
+  document.getElementById("app")
+);
