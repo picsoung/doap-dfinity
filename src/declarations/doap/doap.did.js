@@ -35,6 +35,7 @@ export const idlFactory = ({ IDL }) => {
         [],
       ),
     'endEvent' : IDL.Func([IDL.Text], [Result_1], []),
+    'getDirectEvent' : IDL.Func([IDL.Text], [IDL.Opt(DoapEvent)], ['query']),
     'getEvent' : IDL.Func([IDL.Text], [Result_1], ['query']),
     'getEvents' : IDL.Func(
         [],

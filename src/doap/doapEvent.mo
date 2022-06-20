@@ -30,6 +30,10 @@ module {
             return Result.fromOption(events.get(uid), #notFound);
         };
 
+        public func getDirectEvent(uid: Text): ?DoapEvent {
+            return events.get(uid);
+        };
+
         public func getEvents(): [(Text, DoapEvent)] {
             return Iter.toArray(events.entries())
         };

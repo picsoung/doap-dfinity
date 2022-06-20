@@ -42,6 +42,7 @@ type ClaimOptions =
 service : {
   createEvent: (text, ClaimOptions__1, text, text, text, int) -> (Result_1);
   endEvent: (text) -> (Result_1);
+  getDirectEvent: (text) -> (opt DoapEvent) query;
   getEvent: (text) -> (Result_1) query;
   getEvents: () -> (vec record {
                           text;

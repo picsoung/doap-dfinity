@@ -1,6 +1,7 @@
 import Array "mo:base/Array";
 import Bool "mo:base/Bool";
 import D "mo:base/Debug";
+import Int "mo:base/Int";
 import List "mo:base/List";
 import Nat "mo:base/Nat";
 import Nat16 "mo:base/Nat16";
@@ -9,9 +10,10 @@ import Nat64 "mo:base/Nat64";
 import Nat8 "mo:base/Nat8";
 import Option "mo:base/Option";
 import Principal "mo:base/Principal";
+import Time "mo:base/Time";
 
 import Doap "canister:doap";
-// import DoapEvent "./doapEvent";
+import DoapTypes "../doap/types";
 import Types "./dip721_types";
 
 
@@ -22,8 +24,9 @@ shared actor class Dip721NFT(custodian: Principal, init : Types.Dip721NonFungibl
   stable var logo : Types.LogoResult = init.logo;
   stable var name : Text = init.name;
   stable var symbol : Text = init.symbol;
-  // let eventClass = DoapEvent.DoapEventClass();
-  // stable var totalSupply : Nat16 = init.maxLimit;
+
+
+  type DoapEvent = DoapTypes.DoapEvent;
 
   // https://forum.dfinity.org/t/is-there-any-address-0-equivalent-at-dfinity-motoko/5445/3
   let null_address : Principal = Principal.fromText("aaaaa-aa");
@@ -160,48 +163,94 @@ shared actor class Dip721NFT(custodian: Principal, init : Types.Dip721NonFungibl
     return List.toArray(tokenIds);
   };
 
-   public shared({ caller }) func claimDip721Event(to: Principal, eventId: Types.EventId, metadata: Types.MetadataDesc) : async Types.MintReceipt {
+   public shared({ caller }) func claimDip721Event(to: Principal, eventId: Types.EventId) : async Types.MintReceipt {
     if (not List.some(custodians, func (custodian : Principal) : Bool { custodian == caller })) {
       return #Err(#Unauthorized);
     };
 
-    D.print(debug_show(("CLAIM", eventId)));
-
-    let result = await Doap.isEventActive(eventId);
-    D.print(debug_show(("result", result)));
-
+  
+    let result = await Doap.getDirectEvent(eventId);
+    D.print(debug_show(("CLAIM", eventId, result)));
     switch(result) {
-      case (#err(_)) {
-        return #Err(#Other);
+      case (null) {
+        #Err(#CantClaim);
       };
-      case (#ok(false)) {
-        return #Err(#CantClaim);
-      };
-      case(#ok(true)) {
-        let newId = Nat64.fromNat(List.size(nfts));
-        let nft : Types.Nft = {
-          owner = to;
-          id = newId;
-          eventId = eventId;
-          metadata = metadata;
+      case (? v) {
+        if(v.active == true and v.dateEnding < Time.now()) {
+          let newId = Nat64.fromNat(List.size(nfts));
+
+          //generate metadata from event infos
+          let eventName: Text = v.name;
+          let eventDesc: Text = v.description;
+          let eventImg: Text = v.image;
+          let dateClaimed: Text = Int.toText(Time.now());
+
+          let metadata: Types.MetadataDesc =  [{
+              purpose = #Rendered;
+              data = "";
+              key_val_data = [
+                { key = "event"; val = #TextContent eventName },
+                { key = "description"; val = #TextContent eventDesc },
+                { key = "image"; val = #TextContent eventImg },
+                { key = "tokenId"; val = #Nat64Content newId },
+                { key = "dateClaimed"; val = #TextContent dateClaimed }
+              ]
+          }];
+
+          let nft : Types.Nft = {
+            owner = to;
+            id = newId;
+            eventId = eventId;
+            metadata = metadata;
+          };
+
+          nfts := List.push(nft, nfts);
+
+          transactionId += 1;
+
+          return #Ok({
+            token_id = newId;
+            id = transactionId;
+          });
+        }else{
+          return #Err(#CantClaim);
         };
-
-        nfts := List.push(nft, nfts);
-
-        transactionId += 1;
-
-        return #Ok({
-          token_id = newId;
-          id = transactionId;
-        });
       };
     };
+
+    // D.print(debug_show(("result", result)));
+
+    // switch(result) {
+    //   case (#err(_)) {
+    //     return #Err(#Other);
+    //   };
+    //   case (#ok(false)) {
+    //     return #Err(#CantClaim);
+    //   };
+    //   case(#ok(true)) {
+    //     let newId = Nat64.fromNat(List.size(nfts));
+    //     let nft : Types.Nft = {
+    //       owner = to;
+    //       id = newId;
+    //       eventId = eventId;
+    //       metadata = metadata;
+    //     };
+
+    //     nfts := List.push(nft, nfts);
+
+    //     transactionId += 1;
+
+    //     return #Ok({
+    //       token_id = newId;
+    //       id = transactionId;
+    //     });
+    //   };
+    // };
     // if(result == false){
     //   return #Err(#CantClaim);
     // };
     // Main.isEventActive(eventId);
 
-    
   };
 
   public shared({ caller }) func mintDip721(to: Principal, eventId: Types.EventId, metadata: Types.MetadataDesc) : async Types.MintReceipt {

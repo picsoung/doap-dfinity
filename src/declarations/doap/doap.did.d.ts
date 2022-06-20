@@ -32,6 +32,7 @@ export interface _SERVICE {
     Result_1,
   >,
   'endEvent' : ActorMethod<[string], Result_1>,
+  'getDirectEvent' : ActorMethod<[string], [] | [DoapEvent]>,
   'getEvent' : ActorMethod<[string], Result_1>,
   'getEvents' : ActorMethod<[], Array<[string, DoapEvent]>>,
   'isEventActive' : ActorMethod<[string], Result>,
