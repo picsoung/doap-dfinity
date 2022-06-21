@@ -15,6 +15,7 @@ export const idlFactory = ({ IDL }) => {
     'uid' : IDL.Text,
     'active' : IDL.Bool,
     'dateCreated' : IDL.Int,
+    'owner' : IDL.Principal,
     'name' : IDL.Text,
     'description' : IDL.Text,
     'dateEnding' : IDL.Int,
@@ -24,6 +25,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const Error = IDL.Variant({
     'alreadyExists' : IDL.Null,
+    'NotAuthorized' : IDL.Null,
     'notFound' : IDL.Null,
   });
   const Result_1 = IDL.Variant({ 'ok' : DoapEvent, 'err' : Error });

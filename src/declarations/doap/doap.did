@@ -10,6 +10,7 @@ type Result =
  };
 type Error = 
  variant {
+   NotAuthorized;
    alreadyExists;
    notFound;
  };
@@ -22,6 +23,7 @@ type DoapEvent =
    eventType: ClaimOptions;
    image: text;
    name: text;
+   owner: principal;
    timePeriod: int;
    uid: text;
  };

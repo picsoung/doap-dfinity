@@ -62,7 +62,7 @@ module {
           }
         };
 
-        public func createEvent(_uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int): Result.Result<DoapEvent, Error> {
+        public func createEvent(_owner: Principal, _uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int): Result.Result<DoapEvent, Error> {
             let result = getEvent(_uid);
 
             switch(result) {
@@ -83,6 +83,7 @@ module {
                     
                     // Create event
                     let event: DoapEvent = {
+                      owner = _owner;
                       uid = _uid;
                       eventType = _eventType;
                       name = _name;
@@ -106,26 +107,31 @@ module {
             };
         };
 
-        public func endEvent(uid: Text): Result.Result<DoapEvent, Error>{
+        public func endEvent(caller: Principal, uid: Text): Result.Result<DoapEvent, Error>{
           let result = events.get(uid);
           switch(result) {
               case null{
                 #err(#notFound);
               };
               case (? v) {
-                let new_event : DoapEvent = {
-                      uid = v.uid;
-                      eventType = v.eventType;
-                      name = v.name;
-                      description= v.description;
-                      image = v.image;
-                      timePeriod = v.timePeriod;
-                      dateCreated = v.dateCreated;
-                      dateEnding = v.dateEnding;
-                      active = false;
-                    };
-               let rsUpdateTP = events.replace(uid, new_event);
-                #ok(new_event)
+                if(v.owner == caller){
+                    let new_event : DoapEvent = {
+                        owner = v.owner;
+                        uid = v.uid;
+                        eventType = v.eventType;
+                        name = v.name;
+                        description= v.description;
+                        image = v.image;
+                        timePeriod = v.timePeriod;
+                        dateCreated = v.dateCreated;
+                        dateEnding = v.dateEnding;
+                        active = false;
+                        };
+                let rsUpdateTP = events.replace(uid, new_event);
+                    #ok(new_event)
+                }else{
+                    #err(#NotAuthorized)
+                }
               };
           }
         };

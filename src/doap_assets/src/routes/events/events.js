@@ -1,8 +1,8 @@
 import React, { Fragment, useState, useEffect, useCallback } from "react";
-import { getInvoices } from "../data";
+import { getInvoices } from "../../data";
 import { Link, Outlet } from "react-router-dom";
 // import { doap } from "../services/wrapper";
-import { doap } from "../../../declarations/doap";
+import { doap } from "../../../../declarations/doap";
 
 export default function Events() {
   const [events, setEvents] = useState([]);

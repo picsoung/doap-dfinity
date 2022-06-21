@@ -86,7 +86,8 @@ function Home({ name }) {
         <Box>
           <Heading level={1}>Welcome to DOAP</Heading>
           <Heading level={3}>Claim unique NFT for attending events</Heading>
-          <Button primary label="Create an event" />
+          <Link to="/events/new"><Button primary label="Create an event" /></Link>
+          <Link to="/events"><Button primary label="All events" /></Link>
         </Box>
       </Box>
       <Box pad="small" gap="small" direction="row" align="start">
@@ -112,7 +113,6 @@ function Home({ name }) {
       )}
 
       <Link to="/greeting">Greeting</Link>
-      <Outlet />
     </Layout>
   );
 }

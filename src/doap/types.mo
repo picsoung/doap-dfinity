@@ -8,8 +8,10 @@ module {
   public type Error = {
     #alreadyExists;
     #notFound;
+    #NotAuthorized;
   };
   public type DoapEvent = {
+    owner: Principal;
     uid: Text;
     eventType: ClaimOptions;
     name: Text;

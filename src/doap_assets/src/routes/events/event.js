@@ -1,7 +1,7 @@
 import React, { Fragment, useState } from 'react';
 
 import { useParams } from "react-router-dom";
-import { getInvoice } from "../data";
+import { getInvoice } from "../../data";
 
 export default function Event() {
   let params = useParams();

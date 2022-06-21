@@ -13,6 +13,7 @@ export interface DoapEvent {
   'uid' : string,
   'active' : boolean,
   'dateCreated' : bigint,
+  'owner' : Principal,
   'name' : string,
   'description' : string,
   'dateEnding' : bigint,
@@ -21,6 +22,7 @@ export interface DoapEvent {
   'eventType' : ClaimOptions,
 }
 export type Error = { 'alreadyExists' : null } |
+  { 'NotAuthorized' : null } |
   { 'notFound' : null };
 export type Result = { 'ok' : boolean } |
   { 'err' : Error };

@@ -54,6 +54,7 @@
     "grommet": "^2.24.0",
     "grommet-icons": "^4.7.0",
     "react-router-dom": "^6.3.0",
-    "styled-components": "^5.3.5"
+    "styled-components": "^5.3.5",
+    "uuidv4": "^6.2.13"
   }
 }

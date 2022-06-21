@@ -3,11 +3,12 @@ import Int "mo:base/Int";
 import Text "mo:base/Text";
 import Result "mo:base/Result";
 import TrieMap "mo:base/TrieMap";
+import Principal "mo:base/Principal";
 
 import Hash "mo:base/Hash";
 
 import Types "./types";
-import DoapEvent "./doapEvent";
+import DoapEvent "./doapevent";
 
 actor Doap {
   type ClaimOptions = Types.ClaimOptions;
@@ -45,7 +46,14 @@ actor Doap {
     };
 
     public shared(msg) func endEvent(uid: Text): async Result.Result<DoapEvent, Error> {
-        return eventClass.endEvent(uid);
+      let callerId = msg.caller;
+
+        // // Reject AnonymousIdentity
+        if (Principal.toText(callerId) == "2vxsx-fae") {
+            return #err(#NotAuthorized);
+        };
+
+        return eventClass.endEvent(callerId, uid);
     };
 
     public shared(msg) func isEventActive(uid: Text): async Result.Result<Bool, Error> {
@@ -53,14 +61,14 @@ actor Doap {
     }; 
 
     public shared(msg) func createEvent(_uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int): async Result.Result<DoapEvent, Error> {
-        // let callerId = msg.caller;
+        let callerId = msg.caller;
 
         // // Reject AnonymousIdentity
-        // if (Principal.toText(callerId) == "2vxsx-fae") {
-        //     return #err(#NotAuthorized);
-        // };
+        if (Principal.toText(callerId) == "2vxsx-fae") {
+            return #err(#NotAuthorized);
+        };
 
-        return eventClass.createEvent(_uid, _eventType, _name , _description, _image, _timePeriod);
+        return eventClass.createEvent(callerId, _uid, _eventType, _name , _description, _image, _timePeriod);
     };
 
     system func preupgrade() {
