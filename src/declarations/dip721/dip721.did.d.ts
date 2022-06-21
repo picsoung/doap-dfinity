@@ -8,10 +8,7 @@ export type ApiError = { 'ZeroAddress' : null } |
   { 'CantClaim' : null };
 export interface Dip721NFT {
   'balanceOfDip721' : ActorMethod<[Principal], bigint>,
-  'claimDip721Event' : ActorMethod<
-    [Principal, EventId, MetadataDesc],
-    MintReceipt,
-  >,
+  'claimDip721Event' : ActorMethod<[Principal, EventId], MintReceipt>,
   'getMetadataDip721' : ActorMethod<[TokenId], MetadataResult>,
   'getMetadataForUserDip721' : ActorMethod<[Principal], ExtendedMetadataResult>,
   'getTokenIdsForUserDip721' : ActorMethod<[Principal], Array<TokenId>>,

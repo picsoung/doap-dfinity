@@ -96,7 +96,7 @@ type ApiError =
  };
 service : {
   balanceOfDip721: (principal) -> (nat64) query;
-  claimDip721Event: (principal, EventId, MetadataDesc) -> (MintReceipt);
+  claimDip721Event: (principal, EventId) -> (MintReceipt);
   getMetadataDip721: (TokenId) -> (MetadataResult) query;
   getMetadataForUserDip721: (principal) -> (ExtendedMetadataResult);
   getTokenIdsForUserDip721: (principal) -> (vec TokenId) query;

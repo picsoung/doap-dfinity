@@ -6,6 +6,16 @@ export const idlFactory = ({ IDL }) => {
     'symbol' : IDL.Text,
   });
   const EventId = IDL.Text;
+  const TokenId = IDL.Nat64;
+  const MintReceiptPart = IDL.Record({ 'id' : IDL.Nat, 'token_id' : TokenId });
+  const ApiError = IDL.Variant({
+    'ZeroAddress' : IDL.Null,
+    'InvalidTokenId' : IDL.Null,
+    'Unauthorized' : IDL.Null,
+    'Other' : IDL.Null,
+    'CantClaim' : IDL.Null,
+  });
+  const MintReceipt = IDL.Variant({ 'Ok' : MintReceiptPart, 'Err' : ApiError });
   const MetadataVal = IDL.Variant({
     'Nat64Content' : IDL.Nat64,
     'Nat32Content' : IDL.Nat32,
@@ -26,16 +36,6 @@ export const idlFactory = ({ IDL }) => {
     'purpose' : MetadataPurpose,
   });
   const MetadataDesc = IDL.Vec(MetadataPart);
-  const TokenId = IDL.Nat64;
-  const MintReceiptPart = IDL.Record({ 'id' : IDL.Nat, 'token_id' : TokenId });
-  const ApiError = IDL.Variant({
-    'ZeroAddress' : IDL.Null,
-    'InvalidTokenId' : IDL.Null,
-    'Unauthorized' : IDL.Null,
-    'Other' : IDL.Null,
-    'CantClaim' : IDL.Null,
-  });
-  const MintReceipt = IDL.Variant({ 'Ok' : MintReceiptPart, 'Err' : ApiError });
   const MetadataResult = IDL.Variant({ 'Ok' : MetadataDesc, 'Err' : ApiError });
   const ExtendedMetadataResult = IDL.Variant({
     'Ok' : IDL.Record({ 'token_id' : TokenId, 'metadata_desc' : MetadataDesc }),
@@ -58,11 +58,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const Dip721NFT = IDL.Service({
     'balanceOfDip721' : IDL.Func([IDL.Principal], [IDL.Nat64], ['query']),
-    'claimDip721Event' : IDL.Func(
-        [IDL.Principal, EventId, MetadataDesc],
-        [MintReceipt],
-        [],
-      ),
+    'claimDip721Event' : IDL.Func([IDL.Principal, EventId], [MintReceipt], []),
     'getMetadataDip721' : IDL.Func([TokenId], [MetadataResult], ['query']),
     'getMetadataForUserDip721' : IDL.Func(
         [IDL.Principal],

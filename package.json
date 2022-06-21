@@ -37,7 +37,7 @@
     "terser-webpack-plugin": "5.2.5",
     "util": "0.12.4",
     "webpack": "5.72.0",
-    "webpack-cli": "4.9.2",
+    "webpack-cli": "4.10.0",
     "webpack-dev-server": "^4.8.1"
   },
   "engines": {
@@ -50,6 +50,10 @@
     "last 2 edge version"
   ],
   "dependencies": {
-    "react-router-dom": "^6.3.0"
+    "@psychedelic/plug-connect": "^0.1.4",
+    "grommet": "^2.24.0",
+    "grommet-icons": "^4.7.0",
+    "react-router-dom": "^6.3.0",
+    "styled-components": "^5.3.5"
   }
 }
