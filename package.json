@@ -22,7 +22,7 @@
     "@babel/preset-react": "^7.17.12",
     "@dfinity/agent": "^0.11.3",
     "@dfinity/candid": "0.11.3",
-    "@dfinity/principal": "0.11.3",
+    "@dfinity/principal": "^0.11.3",
     "assert": "2.0.0",
     "babel-loader": "^8.2.5",
     "buffer": "6.0.3",
@@ -52,6 +52,7 @@
   ],
   "dependencies": {
     "@psychedelic/plug-connect": "^0.1.4",
+    "dayjs": "^1.11.3",
     "grommet": "^2.24.0",
     "grommet-icons": "^4.7.0",
     "react-router-dom": "^6.3.0",

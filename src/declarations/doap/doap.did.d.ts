@@ -11,6 +11,7 @@ export type ClaimOptions__1 = { 'open' : null } |
   { 'timelock' : null };
 export interface DoapEvent {
   'uid' : string,
+  'url' : string,
   'active' : boolean,
   'dateCreated' : bigint,
   'owner' : Principal,
@@ -30,7 +31,7 @@ export type Result_1 = { 'ok' : DoapEvent } |
   { 'err' : Error };
 export interface _SERVICE {
   'createEvent' : ActorMethod<
-    [string, ClaimOptions__1, string, string, string, bigint],
+    [string, ClaimOptions__1, string, string, string, bigint, string],
     Result_1,
   >,
   'endEvent' : ActorMethod<[string], Result_1>,

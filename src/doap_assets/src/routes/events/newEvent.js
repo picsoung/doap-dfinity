@@ -134,7 +134,8 @@ export default function NewEvent() {
         eventDetails.name,
         eventDetails.description,
         eventDetails.image,
-        0
+        0,
+        eventDetails.URL
       );
 
       console.log("res", res);
@@ -149,7 +150,6 @@ export default function NewEvent() {
     // createEvent(_uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int)
     // console.log("reees", res);
   };
-  //   , []);
 
   return (
     <Box>

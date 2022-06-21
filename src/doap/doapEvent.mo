@@ -62,7 +62,7 @@ module {
           }
         };
 
-        public func createEvent(_owner: Principal, _uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int): Result.Result<DoapEvent, Error> {
+        public func createEvent(_owner: Principal, _uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int, _url: Text): Result.Result<DoapEvent, Error> {
             let result = getEvent(_uid);
 
             switch(result) {
@@ -92,6 +92,7 @@ module {
                       timePeriod = timeP;
                       dateCreated = dateCreated;
                       dateEnding = dateEnd;
+                      url = _url;
                       active = true;
                     };
 
@@ -125,9 +126,10 @@ module {
                         timePeriod = v.timePeriod;
                         dateCreated = v.dateCreated;
                         dateEnding = v.dateEnding;
+                        url = v.url;
                         active = false;
                         };
-                let rsUpdateTP = events.replace(uid, new_event);
+                    let rsUpdateTP = events.replace(uid, new_event);
                     #ok(new_event)
                 }else{
                     #err(#NotAuthorized)

@@ -14,6 +14,7 @@ module {
     owner: Principal;
     uid: Text;
     eventType: ClaimOptions;
+    url: Text;
     name: Text;
     description: Text;
     image: Text;

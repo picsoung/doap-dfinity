@@ -13,6 +13,7 @@ export const idlFactory = ({ IDL }) => {
   });
   const DoapEvent = IDL.Record({
     'uid' : IDL.Text,
+    'url' : IDL.Text,
     'active' : IDL.Bool,
     'dateCreated' : IDL.Int,
     'owner' : IDL.Principal,
@@ -32,7 +33,15 @@ export const idlFactory = ({ IDL }) => {
   const Result = IDL.Variant({ 'ok' : IDL.Bool, 'err' : Error });
   return IDL.Service({
     'createEvent' : IDL.Func(
-        [IDL.Text, ClaimOptions__1, IDL.Text, IDL.Text, IDL.Text, IDL.Int],
+        [
+          IDL.Text,
+          ClaimOptions__1,
+          IDL.Text,
+          IDL.Text,
+          IDL.Text,
+          IDL.Int,
+          IDL.Text,
+        ],
         [Result_1],
         [],
       ),

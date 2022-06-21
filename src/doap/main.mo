@@ -60,7 +60,7 @@ actor Doap {
         return eventClass.isEventActive(uid);
     }; 
 
-    public shared(msg) func createEvent(_uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int): async Result.Result<DoapEvent, Error> {
+    public shared(msg) func createEvent(_uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int, _url: Text): async Result.Result<DoapEvent, Error> {
         let callerId = msg.caller;
 
         // // Reject AnonymousIdentity
@@ -68,7 +68,7 @@ actor Doap {
             return #err(#NotAuthorized);
         };
 
-        return eventClass.createEvent(callerId, _uid, _eventType, _name , _description, _image, _timePeriod);
+        return eventClass.createEvent(callerId, _uid, _eventType, _name , _description, _image, _timePeriod, _url);
     };
 
     system func preupgrade() {
