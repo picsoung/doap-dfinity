@@ -36,6 +36,10 @@ actor Doap {
       return eventClass.getDirectEvent(uid);
     };
 
+    public query(msg) func getEventsCount(): async Nat {
+        return eventClass.eventsCount;
+    };
+
     public query(msg) func getEvents(): async [(Text, DoapEvent)] {
         return eventClass.getEvents();
     };

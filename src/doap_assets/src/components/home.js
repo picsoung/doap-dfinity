@@ -1,12 +1,17 @@
-import React, { Fragment, useEffect, useState } from "react";
+import React, { Fragment, useEffect, useState, useCallback } from "react";
 import { Outlet, Link } from "react-router-dom";
 import PlugConnect from "@psychedelic/plug-connect";
 import Layout from "./layout/layout";
 
 import { Box, Header, Main, Text, Image, Heading, Button } from "grommet";
 
+import { doap } from "../../../declarations/doap";
+import { dip721 } from "../../../declarations/dip721";
+
 function Home({ name }) {
   const [connected, setConnected] = useState(false);
+  const [nbEvents, setNbEvents] = useState(0);
+  const [nbNFTs, setNbNFTs] = useState(0);
   const [principalId, setPrincipalId] = useState("");
   const network = "https://mainnet.dfinity.network/";
   const whitelist = [
@@ -53,6 +58,22 @@ function Home({ name }) {
   //     }
   //   }, [connected]);
 
+  const getNbEvents = useCallback(async () => {
+    const res = await doap.getEventsCount();
+    setNbEvents(Number(res));
+  }, []);
+
+  const getNbNFTs = useCallback(async () => {
+    const res = await dip721.totalSupplyDip721();
+    console.log('nft', res, typeof res)
+    setNbNFTs(Number(res));
+  }, []);
+
+  useEffect(() => {
+    getNbEvents();
+    getNbNFTs();
+  }, []);
+
   return (
     <Layout>
       <Box pad="small" gap="small" direction="row" align="start">
@@ -71,11 +92,11 @@ function Home({ name }) {
       <Box pad="small" gap="small" direction="row" align="start">
         <Box>
           <Heading level={5}>DOAPs claimed</Heading>
-          <Heading level={2}>5,002</Heading>
+          <Heading level={2}>{nbNFTs}</Heading>
         </Box>
         <Box>
           <Heading level={5}>Events created</Heading>
-          <Heading level={2}>200</Heading>
+          <Heading level={2}>{nbEvents}</Heading>
         </Box>
       </Box>
       {/* <ConnectionBadge principalId={principalId} /> */}

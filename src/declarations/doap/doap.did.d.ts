@@ -35,5 +35,6 @@ export interface _SERVICE {
   'getDirectEvent' : ActorMethod<[string], [] | [DoapEvent]>,
   'getEvent' : ActorMethod<[string], Result_1>,
   'getEvents' : ActorMethod<[], Array<[string, DoapEvent]>>,
+  'getEventsCount' : ActorMethod<[], bigint>,
   'isEventActive' : ActorMethod<[string], Result>,
 }

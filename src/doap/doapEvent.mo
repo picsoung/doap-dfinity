@@ -24,6 +24,7 @@ module {
     };
 
     public class DoapEventClass() {
+        public var eventsCount : Nat = 0;
         public let events = TrieMap.TrieMap<Text, DoapEvent>(isEqualEventName, hashOfEventId);
 
         public func getEvent(uid: Text): Result.Result<DoapEvent, Error> {
@@ -95,6 +96,8 @@ module {
 
                     events.put(_uid, event);
 
+                    eventsCount += 1;
+                    
                     #ok(event);
                 };
                 case(#ok(_)) {
@@ -130,7 +133,8 @@ module {
         public func rePopulateHashmap(values: [(Text, DoapEvent)] ) {
             for ((name, event) in values.vals()) {
                 events.put(name, event);
-            }
+            };
+            eventsCount := events.size();
         }
     }
 }

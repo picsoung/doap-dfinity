@@ -42,6 +42,7 @@ export const idlFactory = ({ IDL }) => {
         [IDL.Vec(IDL.Tuple(IDL.Text, DoapEvent))],
         ['query'],
       ),
+    'getEventsCount' : IDL.Func([], [IDL.Nat], ['query']),
     'isEventActive' : IDL.Func([IDL.Text], [Result], []),
   });
 };

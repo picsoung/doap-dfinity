@@ -48,5 +48,6 @@ service : {
                           text;
                           DoapEvent;
                         }) query;
+  getEventsCount: () -> (nat) query;
   isEventActive: (text) -> (Result);
 }
