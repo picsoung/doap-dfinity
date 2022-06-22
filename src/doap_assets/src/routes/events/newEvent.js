@@ -5,18 +5,12 @@ import { useNavigate } from "react-router-dom";
 import {
   Box,
   Form,
-  Main,
-  Text,
-  Image,
   Heading,
   Button,
   FormField,
   TextInput,
-  CheckBox,
-  Select,
   RadioButtonGroup,
-  TextArea,
-  Spinner
+  Spinner,
 } from "grommet";
 import { v5 as uuidv5 } from "uuid";
 
@@ -82,25 +76,6 @@ export default function NewEvent() {
     });
     console.log("acctor", actor);
     setDoapActor(actor);
-    // const result = await window.ic.plug.requestConnect({ whitelist, network });
-    // console.log("handleConnect", result);
-    // const principal = await window.ic.plug.agent.getPrincipal();
-
-    // if (!window.ic.plug.agent) {
-    //   await window.ic?.plug?.createAgent(whitelist);
-    // }
-
-    // if (principal) {
-    //   setPrincipalId(principal.toText());
-    //   setConnected(true);
-
-    //   const NNSUiActor = await window.ic.plug.createActor({
-    //     canisterId: whitelist[0],
-    //     interfaceFactory: idlFactory,
-    //   });
-    //   console.log(NNSUiActor);
-    //   setDoapActor(NNSUiActor);
-    // }
   };
 
   const handleDisconnect = async () => {
@@ -146,9 +121,6 @@ export default function NewEvent() {
     } catch (e) {
       console.log("ERROR Creating event", e);
     }
-
-    // createEvent(_uid: Text, _eventType: ClaimOptions, _name: Text, _description: Text, _image: Text, _timePeriod: Int)
-    // console.log("reees", res);
   };
 
   return (
@@ -212,7 +184,12 @@ export default function NewEvent() {
             <Range />
           </FormField>
         )}
-        <Box direction="row" justify="between" margin={{ top: "medium" }}>
+        <Box
+          direction="row"
+          justify="between"
+          gap="medium"
+          margin={{ top: "medium" }}
+        >
           {connected ? (
             <Button type="submit" label="Create" primary />
           ) : (
@@ -220,7 +197,6 @@ export default function NewEvent() {
           )}
           {isLoading && <Spinner />}
         </Box>
-        {connected && <Button label="Disconnect" onClick={handleDisconnect} />}
       </Form>
     </Box>
   );

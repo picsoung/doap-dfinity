@@ -1,6 +1,11 @@
 body {
     font-family: sans-serif;
     font-size: 1.5rem;
+    background-color: #A187B0;
+    color:#FFF7FF;
+    font-family: 'Concert One', cursive;
+    height: 100%;
+    margin: 0;
 }
 
 img {

@@ -3,10 +3,24 @@ import { Outlet, Link } from "react-router-dom";
 import PlugConnect from "@psychedelic/plug-connect";
 import Layout from "./layout/layout";
 
-import { Box, Header, Main, Text, Image, Heading, Button } from "grommet";
+import {
+  Box,
+  Header,
+  Main,
+  Text,
+  Image,
+  Heading,
+  Button,
+  Card,
+  CardBody,
+  CardFooter,
+  CardHeader,
+} from "grommet";
 
 import { doap } from "../../../declarations/doap";
 import { dip721 } from "../../../declarations/dip721";
+
+import DoapIcon from "../images/doap_icon.png";
 
 function Home({ name }) {
   const [connected, setConnected] = useState(false);
@@ -65,7 +79,7 @@ function Home({ name }) {
 
   const getNbNFTs = useCallback(async () => {
     const res = await dip721.totalSupplyDip721();
-    console.log('nft', res, typeof res)
+    console.log("nft", res, typeof res);
     setNbNFTs(Number(res));
   }, []);
 
@@ -76,43 +90,41 @@ function Home({ name }) {
 
   return (
     <Layout>
-      <Box pad="small" gap="small" direction="row" align="start">
+      <Box pad="small" gap="large" direction="row" align="start">
         <Box>
-          <Image
-            fallback="//v2.grommet.io/assets/IMG_4245.jpg"
-            src="//v2.grommet.io/assets/IMG_4245_not_exists.jpg"
-          />
+          <Image src={DoapIcon} />
         </Box>
         <Box>
           <Heading level={1}>Welcome to DOAP</Heading>
           <Heading level={3}>Claim unique NFT for attending events</Heading>
-          <Link to="/events/new"><Button primary label="Create an event" /></Link>
-          <Link to="/events"><Button primary label="All events" /></Link>
+          <Box direction="row" gap="medium">
+            <Link to="/events/new">
+              <Button size="medium" primary label="Create an event" />
+            </Link>
+            <Link to="/events">
+              <Button size="medium" label="All events" />
+            </Link>
+          </Box>
         </Box>
       </Box>
       <Box pad="small" gap="small" direction="row" align="start">
-        <Box>
-          <Heading level={5}>DOAPs claimed</Heading>
-          <Heading level={2}>{nbNFTs}</Heading>
+        <Box direction="column">
+          <Card pad="small" background="dark-1" gap="xsmall" align="center">
+            <CardBody pad="small">
+              <Text size="large">DOAPs claimed</Text>
+              <Text size="xxlarge">{nbNFTs}</Text>
+            </CardBody>
+          </Card>
         </Box>
-        <Box>
-          <Heading level={5}>Events created</Heading>
-          <Heading level={2}>{nbEvents}</Heading>
+        <Box direction="column">
+          <Card pad="small" background="dark-1" gap="xsmall" align="center">
+            <CardBody pad="small">
+              <Text size="large">Events created</Text>
+              <Text size="xxlarge">{nbEvents}</Text>
+            </CardBody>
+          </Card>
         </Box>
       </Box>
-      {/* <ConnectionBadge principalId={principalId} /> */}
-      {connected ? (
-        "ssss"
-      ) : (
-        <PlugConnect
-          host={network}
-          whitelist={whitelist}
-          dark
-          onConnectCallback={handleConnect}
-        />
-      )}
-
-      <Link to="/greeting">Greeting</Link>
     </Layout>
   );
 }

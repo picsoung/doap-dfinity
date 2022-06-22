@@ -8,6 +8,7 @@ import {
   Image,
   Heading,
   Button,
+  Anchor,
   FormField,
   TextInput,
   CheckBox,
@@ -78,44 +79,69 @@ export default function Event() {
   const handleClaim = async () => {
     try {
       // setLoading(true);
-      const res = await dip721.claimDip721Event(identity.getPrincipal(), event.uid)
-      console.log('res',res)
-    }catch(e){
-      console.log('error minting ',e)
+      const res = await dip721.claimDip721Event(
+        identity.getPrincipal(),
+        event.uid
+      );
+      console.log("res", res);
+    } catch (e) {
+      console.log("error minting ", e);
     }
-  }
+  };
 
   return (
     <main style={{ padding: "1rem" }}>
       {event && (
-        <Box>
-          <Box style={{ backgroundColor: "red" }}>
+        <Box
+          round="medium"
+          style={{ backgroundColor: "#B99ACC" }}
+          pad="medium"
+          direction="column"
+          gap="medium"
+        >
+          <Box
+            align="center"
+            gap="small"
+            pad="small"
+            style={{ backgroundColor: "#4D4352" }}
+          >
             <Heading level={1}>{event.name}</Heading>
-            <Heading level={5}>DOAP event #{event.uid}</Heading>
-            <Heading level={5}>
+            <Text size="medium">DOAP event #{event.uid}</Text>
+            <Text size="medium">
               Created{" "}
               {DayJS(Number(event.dateCreated) / 1000000).format(
                 "MM/DD/YYYY, HH:mm:ssa"
               )}
-            </Heading>
+            </Text>
           </Box>
-          <Box>
-            <Image src={event.image} />
-            <Heading level={2}>{event.name}</Heading>
-            <Heading level={5}>Created by</Heading>
-            <Heading level={5}>{ownerPrincipal}</Heading>
+          <Box align="center" gap="xmall">
+            <Box height="small" width="small">
+              <Image fit="cover" src={event.image} />
+            </Box>
+            <Heading level={3}>{event.name}</Heading>
+            <Text size="medium" level={5}>
+              Created by
+            </Text>
+            <Text size="medium" level={5}>
+              {ownerPrincipal}
+            </Text>
           </Box>
-          <Box>
-            <Heading level={2}>Description</Heading>
-            <Heading level={5}>{event.description}</Heading>
-            <Heading level={5}>
-              <a href={event.url} target="_blank">
+          <Box gap="small">
+            <Text size="large">Description</Text>
+            <Text size="medium">{event.description}</Text>
+            <Text size="medium">
+              <Anchor href={event.url} target="_blank">
                 Website
-              </a>
-            </Heading>
+              </Anchor>
+            </Text>
           </Box>
           {connected && event.active && (
-            <Button type="submit" label="Claim this DOAP" primary onClick={handleClaim}/>
+            <Button
+              type="submit"
+              label="Claim this DOAP"
+              primary
+              onClick={handleClaim}
+            />
           )}
           {!connected && event.active && (
             <Button type="submit" label="Connect to wallet" primary />
