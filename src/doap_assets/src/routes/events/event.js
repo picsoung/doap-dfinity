@@ -9,13 +9,11 @@ import {
   Heading,
   Button,
   Anchor,
-  FormField,
-  TextInput,
-  CheckBox,
-  Select,
-  RadioButtonGroup,
-  TextArea,
-  Spinner,
+  Table,
+  TableBody,
+  TableCell,
+  TableHeader,
+  TableRow,
 } from "grommet";
 
 import { useParams, Link } from "react-router-dom";
@@ -24,7 +22,7 @@ import DayJS from "dayjs";
 import { StoicIdentity } from "ic-stoic-identity";
 import { Actor, HttpAgent } from "@dfinity/agent";
 
-import { doap , idlFactory } from "../../../../declarations/doap";
+import { doap, idlFactory } from "../../../../declarations/doap";
 import { dip721 } from "../../../../declarations/dip721";
 import { Principal } from "@dfinity/principal";
 import { useAuthContext } from "../../context";
@@ -40,11 +38,16 @@ export default function Event() {
   let [connected, setConnected] = useState(false);
   let [isOwner, setIsOwner] = useState(false);
   let [currentUserPrincipal, setCurrentUserPrincipalId] = useState(null);
-  // let [dip721Actor, setDip721Actor] = useState(null);
-  let [doapActor, setDoapActor] = useState(null);
+  let [claimedDOAPs, setClaimedDOAPs] = useState([]);
+  let [alreadyClaimed, setAlreadyClaimed] = useState(false);
+
+  const columns = [
+    { property: "id", label: "Serial #" },
+    { property: "owner", label: "Owner" },
+  ];
 
   // const dip327canisterId = "rrkah-fqaaa-aaaaa-aaaaq-cai" //ryjl3-tyaaa-aaaaa-aaaba-cai";
-  const canisterId = "ryjl3-tyaaa-aaaaa-aaaba-cai"
+  const canisterId = "ryjl3-tyaaa-aaaaa-aaaba-cai";
 
   useEffect(async () => {
     // const isConnected = async ()=>{
@@ -53,32 +56,6 @@ export default function Event() {
       console.log("idenity loaded");
       setConnected(true);
       setCurrentUserPrincipalId(identity.getPrincipal().toText());
-      //Create an actor canister
-      // const agent = await new HttpAgent({
-      //   identity,
-      //   host: "http://localhost:8000",
-      // });
-      // let key = await agent.fetchRootKey();
-      // const actor = await Actor.createActor(idlFactory, {
-      //   agent,
-      //   dip327canisterId,
-      // });
-      // console.log("acctor", actor);
-      // setDip721Actor(actor);
-
-      // const dAgent = await new HttpAgent({
-      //   identity,
-      //   host: "http://localhost:8000",
-      // });
-      // console.log('dAgent', dAgent)
-      // // let dKey = await dAgent.fetchRootKey();
-      // const dActor = await Actor.createActor(doapIdlFactory, {
-      //   dAgent,
-      //   doapCanisterId,
-      // });
-      // console.log("dActor", dActor);
-      // setDoapActor(dActor);
-      // }
     }
   }, [identity]);
 
@@ -89,6 +66,11 @@ export default function Event() {
       setEvent(res.ok);
       let ownerP = Principal.fromUint8Array(res.ok.owner._arr).toText();
       setOwnerPrincipal(ownerP);
+      const eventNFTs = await dip721.listEventNFTs(params.eventId);
+      console.log("getNFTs", eventNFTs);
+      if (eventNFTs && eventNFTs.length > 0) {
+        setClaimedDOAPs(eventNFTs);
+      }
     } else {
     }
   }, []);
@@ -98,20 +80,24 @@ export default function Event() {
     if (event && identity) {
       if (ownerPrincipal === currentUserPrincipal) {
         setIsOwner(true);
-        // const agent = await new HttpAgent({
-        //   identity,
-        //   host: "http://localhost:8000",
-        // });
-        // let key = await agent.fetchRootKey();
-        // const actor = await Actor.createActor(doapIdlFactory, {
-        //   agent,
-        //   doapCanisterId,
-        // });
-        // console.log("acctor", actor);
-        // setDoapActor(actor);
       }
     }
   }, [ownerPrincipal, currentUserPrincipal]);
+
+  //already claimed by current user?
+  useEffect(async () => {
+    if (claimedDOAPs && currentUserPrincipal) {
+      console.log("ddd", currentUserPrincipal);
+      let existingNFT = claimedDOAPs.find((d) => {
+        let ownerP = Principal.fromUint8Array(d.owner._arr).toText();
+        return ownerP === currentUserPrincipal;
+      });
+      console.log("ll", existingNFT);
+      if (existingNFT) {
+        setAlreadyClaimed(true);
+      }
+    }
+  }, [claimedDOAPs, currentUserPrincipal]);
 
   const handleConnect = async () => {
     let identity = await StoicIdentity.load();
@@ -154,7 +140,7 @@ export default function Event() {
     if (res && res.ok) {
       getEvent();
     }
-  }
+  };
 
   return (
     <main style={{ padding: "1rem" }}>
@@ -203,13 +189,16 @@ export default function Event() {
                 </Anchor>
               </Text>
             </Box>
-            {connected && event.active && (
+            {connected && event.active && !alreadyClaimed && (
               <Button
                 type="submit"
                 label="Claim this DOAP"
                 primary
                 onClick={handleClaim}
               />
+            )}
+            {connected && event.active && alreadyClaimed && (
+              <Button type="submit" label="Already Claimed" />
             )}
             {!connected && event.active && (
               <Button
@@ -247,6 +236,49 @@ export default function Event() {
                   onClick={handleToggleEvent}
                 />
               )}
+            </Box>
+          </Box>
+        )}
+        {event && claimedDOAPs.length > 0 && (
+          <Box
+            round="medium"
+            style={{ backgroundColor: "#B99ACC" }}
+            pad="medium"
+            direction="column"
+            gap="medium"
+          >
+            <Box align="center" gap="small" pad="small">
+              <Heading level={2}>Owned By</Heading>
+              <Table>
+                <TableHeader>
+                  <TableRow>
+                    {columns.map((c) => (
+                      <TableCell key={c.property} scope="col">
+                        <Text size="xlarge">{c.label}</Text>
+                      </TableCell>
+                    ))}
+                  </TableRow>
+                </TableHeader>
+                <TableBody>
+                  {claimedDOAPs.map((nft) => (
+                    <TableRow key={Number(nft.id)}>
+                      {columns.map((c) => (
+                        <TableCell key={Number(nft.id)}>
+                          {c.property === "owner" ? (
+                            <Text size="large">
+                              {Principal.fromUint8Array(
+                                nft[c.property]._arr
+                              ).toText()}
+                            </Text>
+                          ) : (
+                            <Text size="large">{Number(nft[c.property])}</Text>
+                          )}
+                        </TableCell>
+                      ))}
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
             </Box>
           </Box>
         )}
