@@ -1,12 +1,12 @@
 type Result_1 = 
  variant {
    err: Error;
-   ok: DoapEvent;
+   ok: bool;
  };
 type Result = 
  variant {
    err: Error;
-   ok: bool;
+   ok: DoapEvent;
  };
 type Error = 
  variant {
@@ -44,14 +44,14 @@ type ClaimOptions =
  };
 service : {
   createEvent: (text, ClaimOptions__1, text, text, text, int, text) ->
-   (Result_1);
-  endEvent: (text) -> (Result_1);
+   (Result);
   getDirectEvent: (text) -> (opt DoapEvent) query;
-  getEvent: (text) -> (Result_1) query;
+  getEvent: (text) -> (Result) query;
   getEvents: () -> (vec record {
                           text;
                           DoapEvent;
                         }) query;
   getEventsCount: () -> (nat) query;
-  isEventActive: (text) -> (Result);
+  isEventActive: (text) -> (Result_1);
+  toggleEvent: (text) -> (Result);
 }

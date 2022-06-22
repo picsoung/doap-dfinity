@@ -62,7 +62,7 @@ const ConnectionBadge = () => {
             {identity ? (
               <Text onClick={handleModal}>{shortPrincipal(principalId)}</Text>
             ) : (
-              <Button label="Connect to wallet" onClick={handleConnect} />
+              <Button style={{border: 'none'}} label="Connect to wallet" onClick={handleConnect} />
             )}
           </div>
         </div>

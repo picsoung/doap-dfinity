@@ -108,13 +108,14 @@ module {
             };
         };
 
-        public func endEvent(caller: Principal, uid: Text): Result.Result<DoapEvent, Error>{
+        public func toggleEvent(caller: Principal, uid: Text): Result.Result<DoapEvent, Error>{
           let result = events.get(uid);
           switch(result) {
               case null{
                 #err(#notFound);
               };
               case (? v) {
+                D.print(debug_show(("toogle", v.owner, caller, v.active, not v.active)));
                 if(v.owner == caller){
                     let new_event : DoapEvent = {
                         owner = v.owner;
@@ -127,7 +128,7 @@ module {
                         dateCreated = v.dateCreated;
                         dateEnding = v.dateEnding;
                         url = v.url;
-                        active = false;
+                        active = not v.active;
                         };
                     let rsUpdateTP = events.replace(uid, new_event);
                     #ok(new_event)

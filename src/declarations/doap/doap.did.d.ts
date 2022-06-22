@@ -25,19 +25,19 @@ export interface DoapEvent {
 export type Error = { 'alreadyExists' : null } |
   { 'NotAuthorized' : null } |
   { 'notFound' : null };
-export type Result = { 'ok' : boolean } |
+export type Result = { 'ok' : DoapEvent } |
   { 'err' : Error };
-export type Result_1 = { 'ok' : DoapEvent } |
+export type Result_1 = { 'ok' : boolean } |
   { 'err' : Error };
 export interface _SERVICE {
   'createEvent' : ActorMethod<
     [string, ClaimOptions__1, string, string, string, bigint, string],
-    Result_1,
+    Result,
   >,
-  'endEvent' : ActorMethod<[string], Result_1>,
   'getDirectEvent' : ActorMethod<[string], [] | [DoapEvent]>,
-  'getEvent' : ActorMethod<[string], Result_1>,
+  'getEvent' : ActorMethod<[string], Result>,
   'getEvents' : ActorMethod<[], Array<[string, DoapEvent]>>,
   'getEventsCount' : ActorMethod<[], bigint>,
-  'isEventActive' : ActorMethod<[string], Result>,
+  'isEventActive' : ActorMethod<[string], Result_1>,
+  'toggleEvent' : ActorMethod<[string], Result>,
 }

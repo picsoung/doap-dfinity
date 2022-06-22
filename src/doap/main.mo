@@ -1,14 +1,14 @@
-import Time "mo:base/Time";
-import Int "mo:base/Int";
-import Text "mo:base/Text";
-import Result "mo:base/Result";
-import TrieMap "mo:base/TrieMap";
-import Principal "mo:base/Principal";
-
+import D "mo:base/Debug";
 import Hash "mo:base/Hash";
+import Int "mo:base/Int";
+import Principal "mo:base/Principal";
+import Result "mo:base/Result";
+import Text "mo:base/Text";
+import Time "mo:base/Time";
+import TrieMap "mo:base/TrieMap";
 
-import Types "./types";
 import DoapEvent "./doapevent";
+import Types "./types";
 
 actor Doap {
   type ClaimOptions = Types.ClaimOptions;
@@ -45,15 +45,16 @@ actor Doap {
         return eventClass.getEvents();
     };
 
-    public shared(msg) func endEvent(uid: Text): async Result.Result<DoapEvent, Error> {
+    public shared(msg) func toggleEvent(uid: Text): async Result.Result<DoapEvent, Error> {
       let callerId = msg.caller;
+       D.print(debug_show(("toggleEvent", uid, callerId)));
 
         // // Reject AnonymousIdentity
         if (Principal.toText(callerId) == "2vxsx-fae") {
             return #err(#NotAuthorized);
         };
 
-        return eventClass.endEvent(callerId, uid);
+        return eventClass.toggleEvent(callerId, uid);
     };
 
     public shared(msg) func isEventActive(uid: Text): async Result.Result<Bool, Error> {
