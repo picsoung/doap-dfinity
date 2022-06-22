@@ -10,6 +10,7 @@ export const idlFactory = ({ IDL }) => {
   const MintReceiptPart = IDL.Record({ 'id' : IDL.Nat, 'token_id' : TokenId });
   const ApiError = IDL.Variant({
     'ZeroAddress' : IDL.Null,
+    'AlreadyClaimed' : IDL.Null,
     'InvalidTokenId' : IDL.Null,
     'Unauthorized' : IDL.Null,
     'Other' : IDL.Null,

@@ -18,6 +18,7 @@ module {
     #Unauthorized;
     #InvalidTokenId;
     #ZeroAddress;
+    #AlreadyClaimed;
     #CantClaim;
     #Other;
   };

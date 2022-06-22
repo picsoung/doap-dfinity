@@ -2,6 +2,7 @@ import type { Principal } from '@dfinity/principal';
 import type { ActorMethod } from '@dfinity/agent';
 
 export type ApiError = { 'ZeroAddress' : null } |
+  { 'AlreadyClaimed' : null } |
   { 'InvalidTokenId' : null } |
   { 'Unauthorized' : null } |
   { 'Other' : null } |

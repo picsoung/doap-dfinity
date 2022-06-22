@@ -1,4 +1,4 @@
-import React, { Fragment, useState, useEffect, useCallback } from "react";
+import React, { Fragment, useState, useEffect, useCallback, useContext } from "react";
 import { getInvoices } from "../../data";
 import { Link, Outlet } from "react-router-dom";
 // import { doap } from "../services/wrapper";
@@ -6,6 +6,7 @@ import { doap } from "../../../../declarations/doap";
 
 export default function Events() {
   const [events, setEvents] = useState([]);
+
 
   const getEvents = useCallback(async () => {
     const res = await doap.getEvents();

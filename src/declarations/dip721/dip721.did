@@ -106,6 +106,7 @@ type Dip721NFT =
  };
 type ApiError = 
  variant {
+   AlreadyClaimed;
    CantClaim;
    InvalidTokenId;
    Other;

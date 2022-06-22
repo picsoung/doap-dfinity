@@ -26,6 +26,7 @@ type DoapEvent =
    owner: principal;
    timePeriod: int;
    uid: text;
+   url: text;
  };
 type ClaimOptions__1 = 
  variant {
@@ -42,7 +43,8 @@ type ClaimOptions =
    timelockAndSecret;
  };
 service : {
-  createEvent: (text, ClaimOptions__1, text, text, text, int) -> (Result_1);
+  createEvent: (text, ClaimOptions__1, text, text, text, int, text) ->
+   (Result_1);
   endEvent: (text) -> (Result_1);
   getDirectEvent: (text) -> (opt DoapEvent) query;
   getEvent: (text) -> (Result_1) query;

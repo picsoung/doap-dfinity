@@ -164,13 +164,13 @@ shared actor class Dip721NFT(custodian: Principal, init : Types.Dip721NonFungibl
   };
 
    public shared({ caller }) func claimDip721Event(to: Principal, eventId: Types.EventId) : async Types.MintReceipt {
-    if (not List.some(custodians, func (custodian : Principal) : Bool { custodian == caller })) {
-      return #Err(#Unauthorized);
+    // Can only claim one
+    let didAlreadyClaimed = List.some(nfts, func (token: Types.Nft) : Bool { token.owner == to and token.eventId == eventId });
+    if (didAlreadyClaimed == true) {
+      return #Err(#AlreadyClaimed);
     };
 
-  
     let result = await Doap.getDirectEvent(eventId);
-    D.print(debug_show(("CLAIM", eventId, result)));
     switch(result) {
       case (null) {
         #Err(#CantClaim);
